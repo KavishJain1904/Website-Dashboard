@@ -1,0 +1,44 @@
+<!-- hello.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Analytics Dashboard</title>
+</head>
+
+<body>
+    <h1>Website Analytics (Last 7 Days)</h1>
+    <div id="analytics"></div>
+
+    <script>
+        fetch('http://localhost:3000/analytics')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('analytics');
+
+                if (!data.rows || data.rows.length === 0) {
+                    container.innerHTML = '<p>No data found for this period.</p>';
+                    return;
+                }
+
+                let output = '<table border="1" cellpadding="8"><tr><th>Date</th><th>Sessions</th><th>Users</th></tr>';
+
+                data.rows.forEach(row => {
+                    const date = row.dimensionValues?.[0]?.value || 'N/A';
+                    const sessions = row.metricValues?.[0]?.value || '0';
+                    const users = row.metricValues?.[1]?.value || '0';
+
+                    output += `<tr><td>${date}</td><td>${sessions}</td><td>${users}</td></tr>`;
+                });
+
+                output += '</table>';
+                container.innerHTML = output;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('analytics').innerHTML = '<p>Failed to load data.</p>';
+            });
+    </script>
+</body>
+
+</html>
