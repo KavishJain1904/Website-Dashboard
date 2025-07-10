@@ -1,44 +1,226 @@
-<!-- hello.html -->
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Analytics Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Analytics Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <h1>Website Analytics (Last 7 Days)</h1>
-    <div id="analytics"></div>
+    <div class="bg-animation" id="bgAnimation"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Real-Time Analytics</h1>
+            <p>Live user activity tracking powered by Google Analytics 4</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">👥</div>
+                    <div class="card-title">Active Users</div>
+                </div>
+                <div class="metric-big" id="totalUsers">0</div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-text">Live tracking enabled</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🌍</div>
+                    <div class="card-title">Countries Online</div>
+                </div>
+                <div class="metric-big" id="totalCountries">0</div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-text">Global reach tracking</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">📊</div>
+                <div class="card-title">Users by Country</div>
+            </div>
+            <div class="table-container">
+                <div id="realtime" class="loading">Loading real-time data...</div>
+            </div>
+            <button class="refresh-btn" onclick="fetchRealtimeData()">Refresh Data</button>
+        </div>
+
+        <div class="last-updated">
+            Last updated: <span id="lastUpdated">Never</span>
+        </div>
+    </div>
 
     <script>
-        fetch('http://localhost:3000/analytics')
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('analytics');
+        // Create animated background particles
+        function createParticles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
 
-                if (!data.rows || data.rows.length === 0) {
-                    container.innerHTML = '<p>No data found for this period.</p>';
-                    return;
+        // Country flag mapping
+        const countryFlags = {
+            'United States': '🇺🇸',
+            'United Kingdom': '🇬🇧',
+            'Canada': '🇨🇦',
+            'Australia': '🇦🇺',
+            'Germany': '🇩🇪',
+            'France': '🇫🇷',
+            'Italy': '🇮🇹',
+            'Spain': '🇪🇸',
+            'Japan': '🇯🇵',
+            'China': '🇨🇳',
+            'India': '🇮🇳',
+            'Brazil': '🇧🇷',
+            'Russia': '🇷🇺',
+            'South Korea': '🇰🇷',
+            'Netherlands': '🇳🇱',
+            'Sweden': '🇸🇪',
+            'Norway': '🇳🇴',
+            'Denmark': '🇩🇰',
+            'Finland': '🇫🇮',
+            'Belgium': '🇧🇪',
+            'Switzerland': '🇨🇭',
+            'Austria': '🇦🇹',
+            'Poland': '🇵🇱',
+            'Portugal': '🇵🇹',
+            'Greece': '🇬🇷',
+            'Turkey': '🇹🇷',
+            'Israel': '🇮🇱',
+            'South Africa': '🇿🇦',
+            'Mexico': '🇲🇽',
+            'Argentina': '🇦🇷',
+            'Chile': '🇨🇱',
+            'Colombia': '🇨🇴',
+            'Thailand': '🇹🇭',
+            'Singapore': '🇸🇬',
+            'Malaysia': '🇲🇾',
+            'Indonesia': '🇮🇩',
+            'Philippines': '🇵🇭',
+            'Vietnam': '🇻🇳',
+            'New Zealand': '🇳🇿',
+            'Ireland': '🇮🇪',
+            'Czech Republic': '🇨🇿',
+            'Hungary': '🇭🇺',
+            'Romania': '🇷🇴',
+            'Bulgaria': '🇧🇬',
+            'Croatia': '🇭🇷',
+            'Slovenia': '🇸🇮',
+            'Slovakia': '🇸🇰',
+            'Lithuania': '🇱🇹',
+            'Latvia': '🇱🇻',
+            'Estonia': '🇪🇪'
+        };
+
+        function getCountryFlag(country) {
+            return countryFlags[country] || '🌍';
+        }
+
+        function animateNumber(element, targetValue, duration = 1000) {
+            const startValue = parseInt(element.textContent) || 0;
+            const increment = (targetValue - startValue) / (duration / 16);
+            let currentValue = startValue;
+            
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if ((increment > 0 && currentValue >= targetValue) || 
+                    (increment < 0 && currentValue <= targetValue)) {
+                    currentValue = targetValue;
+                    clearInterval(timer);
                 }
+                element.textContent = Math.floor(currentValue);
+            }, 16);
+        }
 
-                let output = '<table border="1" cellpadding="8"><tr><th>Date</th><th>Sessions</th><th>Users</th></tr>';
+        function fetchRealtimeData() {
+            const container = document.getElementById('realtime');
+            container.innerHTML = '<div class="loading">Fetching latest data...</div>';
 
-                data.rows.forEach(row => {
-                    const date = row.dimensionValues?.[0]?.value || 'N/A';
-                    const sessions = row.metricValues?.[0]?.value || '0';
-                    const users = row.metricValues?.[1]?.value || '0';
+            fetch('http://localhost:3000/realtime')
+                .then(response => response.json())
+                .then(data => {
+                    const totalUsersEl = document.getElementById('totalUsers');
+                    const totalCountriesEl = document.getElementById('totalCountries');
+                    const lastUpdatedEl = document.getElementById('lastUpdated');
 
-                    output += `<tr><td>${date}</td><td>${sessions}</td><td>${users}</td></tr>`;
+                    if (!data.rows || data.rows.length === 0) {
+                        container.innerHTML = '<div class="error">🚫 No active users detected right now</div>';
+                        animateNumber(totalUsersEl, 0);
+                        animateNumber(totalCountriesEl, 0);
+                        return;
+                    }
+
+                    // Calculate totals
+                    let totalUsers = 0;
+                    data.rows.forEach(row => {
+                        totalUsers += parseInt(row.metricValues?.[0]?.value || 0);
+                    });
+
+                    // Update metrics with animation
+                    animateNumber(totalUsersEl, totalUsers);
+                    animateNumber(totalCountriesEl, data.rows.length);
+
+                    // Create table
+                    let tableHTML = `
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Country</th>
+                                    <th>Active Users</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    data.rows
+                        .sort((a, b) => parseInt(b.metricValues?.[0]?.value || 0) - parseInt(a.metricValues?.[0]?.value || 0))
+                        .forEach(row => {
+                            const country = row.dimensionValues?.[0]?.value || 'Unknown';
+                            const users = row.metricValues?.[0]?.value || '0';
+                            const flag = getCountryFlag(country);
+                            
+                            tableHTML += `
+                                <tr>
+                                    <td>
+                                        <span class="country-flag">${flag}</span>
+                                        ${country}
+                                    </td>
+                                    <td class="users-count">${users}</td>
+                                </tr>
+                            `;
+                        });
+
+                    tableHTML += '</tbody></table>';
+                    container.innerHTML = tableHTML;
+
+                    // Update last updated time
+                    lastUpdatedEl.textContent = new Date().toLocaleString();
+                })
+                .catch(error => {
+                    console.error('Error fetching realtime data:', error);
+                    container.innerHTML = '<div class="error">⚠️ Failed to connect to analytics server</div>';
                 });
+        }
 
-                output += '</table>';
-                container.innerHTML = output;
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-                document.getElementById('analytics').innerHTML = '<p>Failed to load data.</p>';
-            });
+        // Initialize
+        createParticles();
+        fetchRealtimeData();
+        
+        // Auto refresh every 30 seconds
+        setInterval(fetchRealtimeData, 30000);
     </script>
 </body>
-
 </html>

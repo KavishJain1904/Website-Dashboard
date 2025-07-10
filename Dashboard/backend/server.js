@@ -8,36 +8,38 @@ const port = 3000;
 app.use(cors());
 
 const analyticsData = google.analyticsdata('v1beta');
-const key = require('./service-account.json'); // Path to your service account JSON
+const key = require('./service-account.json'); // ✅ Your service account JSON file
 
 const auth = new google.auth.GoogleAuth({
     credentials: key,
     scopes: 'https://www.googleapis.com/auth/analytics.readonly'
 });
 
-app.get('/analytics', async (req, res) => {
+// ✅ Real-Time Analytics Endpoint
+app.get('/realtime', async (req, res) => {
     try {
         const authClient = await auth.getClient();
-        const propertyId = '495329912'; // 👈 Replace with your 10-digit GA4 Property ID
+        const propertyId = '495329912'; // ✅ Your GA4 Property ID
 
-        const result = await analyticsData.properties.runReport({
+        const response = await analyticsData.properties.runRealtimeReport({
             property: `properties/${propertyId}`,
             auth: authClient,
             requestBody: {
-                dateRanges: [{ startDate: '7daysAgo', endDate: 'today' }],
-                dimensions: [{ name: 'date' }],
-                metrics: [{ name: 'sessions' }, { name: 'totalUsers' }]
+                dimensions: [{ name: 'country' }],
+                metrics: [{ name: 'activeUsers' }]
             }
         });
 
-        res.json(result.data);
-    } catch (err) {
-        console.error('Error fetching analytics data:', err);
-        res.status(500).send('Failed to fetch analytics data');
+        res.json(response.data || {});
+        console.log('Realtime data sent:', response.data);
+    } catch (error) {
+        console.error('Error fetching realtime analytics:', error);
+        res.status(500).send('Failed to fetch realtime data');
     }
 });
 
 app.listen(port, () => {
     console.log(`🚀 Server running at http://localhost:${port}`);
 });
+
 
