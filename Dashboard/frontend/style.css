@@ -144,16 +144,6 @@ body {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.loading::after {
-    content: '';
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid #00ff88;
-    border-radius: 50%;
-}
-
 .error {
     background: rgba(255, 0, 0, 0.1);
     border: 1px solid rgba(255, 0, 0, 0.3);
