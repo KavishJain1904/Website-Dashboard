@@ -7,8 +7,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="bg-animation" id="bgAnimation"></div>
-    
     <div class="container">
         <div class="header">
             <h1>🚀 Real-Time Analytics</h1>
@@ -58,68 +56,17 @@
     </div>
 
     <script>
-        function createParticles() {
-            const bgAnimation = document.getElementById('bgAnimation');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                bgAnimation.appendChild(particle);
-            }
-        }
         const countryFlags = {
-            'United States': '🇺🇸',
-            'United Kingdom': '🇬🇧',
-            'Canada': '🇨🇦',
-            'Australia': '🇦🇺',
-            'Germany': '🇩🇪',
-            'France': '🇫🇷',
-            'Italy': '🇮🇹',
-            'Spain': '🇪🇸',
-            'Japan': '🇯🇵',
-            'China': '🇨🇳',
-            'India': '🇮🇳',
-            'Brazil': '🇧🇷',
-            'Russia': '🇷🇺',
-            'South Korea': '🇰🇷',
-            'Netherlands': '🇳🇱',
-            'Sweden': '🇸🇪',
-            'Norway': '🇳🇴',
-            'Denmark': '🇩🇰',
-            'Finland': '🇫🇮',
-            'Belgium': '🇧🇪',
-            'Switzerland': '🇨🇭',
-            'Austria': '🇦🇹',
-            'Poland': '🇵🇱',
-            'Portugal': '🇵🇹',
-            'Greece': '🇬🇷',
-            'Turkey': '🇹🇷',
-            'Israel': '🇮🇱',
-            'South Africa': '🇿🇦',
-            'Mexico': '🇲🇽',
-            'Argentina': '🇦🇷',
-            'Chile': '🇨🇱',
-            'Colombia': '🇨🇴',
-            'Thailand': '🇹🇭',
-            'Singapore': '🇸🇬',
-            'Malaysia': '🇲🇾',
-            'Indonesia': '🇮🇩',
-            'Philippines': '🇵🇭',
-            'Vietnam': '🇻🇳',
-            'New Zealand': '🇳🇿',
-            'Ireland': '🇮🇪',
-            'Czech Republic': '🇨🇿',
-            'Hungary': '🇭🇺',
-            'Romania': '🇷🇴',
-            'Bulgaria': '🇧🇬',
-            'Croatia': '🇭🇷',
-            'Slovenia': '🇸🇮',
-            'Slovakia': '🇸🇰',
-            'Lithuania': '🇱🇹',
-            'Latvia': '🇱🇻',
-            'Estonia': '🇪🇪'
+            'United States': '🇺🇸', 'United Kingdom': '🇬🇧', 'Canada': '🇨🇦', 'Australia': '🇦🇺',
+            'Germany': '🇩🇪', 'France': '🇫🇷', 'Italy': '🇮🇹', 'Spain': '🇪🇸', 'Japan': '🇯🇵',
+            'China': '🇨🇳', 'India': '🇮🇳', 'Brazil': '🇧🇷', 'Russia': '🇷🇺', 'South Korea': '🇰🇷',
+            'Netherlands': '🇳🇱', 'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Finland': '🇫🇮',
+            'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹', 'Poland': '🇵🇱', 'Portugal': '🇵🇹',
+            'Greece': '🇬🇷', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'South Africa': '🇿🇦', 'Mexico': '🇲🇽',
+            'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Colombia': '🇨🇴', 'Thailand': '🇹🇭', 'Singapore': '🇸🇬',
+            'Malaysia': '🇲🇾', 'Indonesia': '🇮🇩', 'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'New Zealand': '🇳🇿',
+            'Ireland': '🇮🇪', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Romania': '🇷🇴', 'Bulgaria': '🇧🇬',
+            'Croatia': '🇭🇷', 'Slovenia': '🇸🇮', 'Slovakia': '🇸🇰', 'Lithuania': '🇱🇹', 'Latvia': '🇱🇻', 'Estonia': '🇪🇪'
         };
 
         function getCountryFlag(country) {
@@ -130,10 +77,9 @@
             const startValue = parseInt(element.textContent) || 0;
             const increment = (targetValue - startValue) / (duration / 16);
             let currentValue = startValue;
-            
             const timer = setInterval(() => {
                 currentValue += increment;
-                if ((increment > 0 && currentValue >= targetValue) || 
+                if ((increment > 0 && currentValue >= targetValue) ||
                     (increment < 0 && currentValue <= targetValue)) {
                     currentValue = targetValue;
                     clearInterval(timer);
@@ -145,7 +91,6 @@
         function fetchRealtimeData() {
             const container = document.getElementById('realtime');
             container.innerHTML = '<div class="loading">Fetching latest data...</div>';
-
             fetch('http://localhost:3000/realtime')
                 .then(response => response.json())
                 .then(data => {
@@ -159,6 +104,7 @@
                         animateNumber(totalCountriesEl, 0);
                         return;
                     }
+
                     let totalUsers = 0;
                     data.rows.forEach(row => {
                         totalUsers += parseInt(row.metricValues?.[0]?.value || 0);
@@ -183,13 +129,9 @@
                             const country = row.dimensionValues?.[0]?.value || 'Unknown';
                             const users = row.metricValues?.[0]?.value || '0';
                             const flag = getCountryFlag(country);
-                            
                             tableHTML += `
                                 <tr>
-                                    <td>
-                                        <span class="country-flag">${flag}</span>
-                                        ${country}
-                                    </td>
+                                    <td><span class="country-flag">${flag}</span> ${country}</td>
                                     <td class="users-count">${users}</td>
                                 </tr>
                             `;
@@ -197,7 +139,6 @@
 
                     tableHTML += '</tbody></table>';
                     container.innerHTML = tableHTML;
-
                     lastUpdatedEl.textContent = new Date().toLocaleString();
                 })
                 .catch(error => {
@@ -206,10 +147,9 @@
                 });
         }
 
-        createParticles();
         fetchRealtimeData();
-        
         setInterval(fetchRealtimeData, 30000);
     </script>
 </body>
 </html>
+
