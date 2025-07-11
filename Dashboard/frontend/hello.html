@@ -58,7 +58,6 @@
     </div>
 
     <script>
-        // Create animated background particles
         function createParticles() {
             const bgAnimation = document.getElementById('bgAnimation');
             for (let i = 0; i < 50; i++) {
@@ -70,8 +69,6 @@
                 bgAnimation.appendChild(particle);
             }
         }
-
-        // Country flag mapping
         const countryFlags = {
             'United States': '🇺🇸',
             'United Kingdom': '🇬🇧',
@@ -162,18 +159,13 @@
                         animateNumber(totalCountriesEl, 0);
                         return;
                     }
-
-                    // Calculate totals
                     let totalUsers = 0;
                     data.rows.forEach(row => {
                         totalUsers += parseInt(row.metricValues?.[0]?.value || 0);
                     });
-
-                    // Update metrics with animation
                     animateNumber(totalUsersEl, totalUsers);
                     animateNumber(totalCountriesEl, data.rows.length);
 
-                    // Create table
                     let tableHTML = `
                         <table class="table">
                             <thead>
@@ -206,7 +198,6 @@
                     tableHTML += '</tbody></table>';
                     container.innerHTML = tableHTML;
 
-                    // Update last updated time
                     lastUpdatedEl.textContent = new Date().toLocaleString();
                 })
                 .catch(error => {
@@ -215,11 +206,9 @@
                 });
         }
 
-        // Initialize
         createParticles();
         fetchRealtimeData();
         
-        // Auto refresh every 30 seconds
         setInterval(fetchRealtimeData, 30000);
     </script>
 </body>
