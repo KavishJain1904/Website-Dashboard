@@ -12,49 +12,7 @@ body {
     position: relative;
 }
 
-
-.bg-animation {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    animation: float 20s infinite linear;
-}
-
-@keyframes float {
-    0% {
-        transform: translateY(100vh) rotate(0deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-100vh) rotate(360deg);
-        opacity: 0;
-    }
-}
-
 .container {
-    position: relative;
-    z-index: 1;
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
@@ -73,19 +31,6 @@ body {
     color: white;
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     margin-bottom: 15px;
-    animation: pulse 3s ease-in-out infinite;
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
 }
 
 .header p {
@@ -107,42 +52,6 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 20px;
     padding: 30px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: rotate(45deg);
-    transition: all 0.5s;
-    opacity: 0;
-}
-
-.card:hover::before {
-    opacity: 1;
-    animation: shimmer 1.5s ease-in-out;
-}
-
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
-    }
-
-    100% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
-    }
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .card-header {
@@ -154,26 +63,6 @@ body {
 .card-icon {
     font-size: 2.5rem;
     margin-right: 15px;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0);
-    }
-
-    40% {
-        transform: translateY(-10px);
-    }
-
-    60% {
-        transform: translateY(-5px);
-    }
 }
 
 .card-title {
@@ -189,19 +78,6 @@ body {
     color: #00ff88;
     text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
     margin: 20px 0;
-    animation: countUp 2s ease-out;
-}
-
-@keyframes countUp {
-    from {
-        opacity: 0;
-        transform: scale(0.5);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .status-indicator {
@@ -216,19 +92,6 @@ body {
     border-radius: 50%;
     background: #00ff88;
     margin-right: 10px;
-    animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
-    }
-
-    50% {
-        box-shadow: 0 0 0 10px rgba(0, 255, 136, 0);
-    }
 }
 
 .status-text {
@@ -262,12 +125,6 @@ body {
     padding: 18px 20px;
     color: rgba(255, 255, 255, 0.9);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.table tr:hover td {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(1.02);
 }
 
 .country-flag {
@@ -295,18 +152,6 @@ body {
     border: 3px solid rgba(255, 255, 255, 0.3);
     border-top: 3px solid #00ff88;
     border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-left: 15px;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
 }
 
 .error {
@@ -333,20 +178,10 @@ body {
     border-radius: 25px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
     margin: 20px auto;
     display: block;
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-.refresh-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
-}
-
-.refresh-btn:active {
-    transform: translateY(0);
 }
 
 @media (max-width: 768px) {
