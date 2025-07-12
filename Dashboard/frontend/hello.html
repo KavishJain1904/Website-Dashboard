@@ -56,21 +56,12 @@
     </div>
 
     <script>
-        const countryFlags = {
-            'United States': '🇺🇸', 'United Kingdom': '🇬🇧', 'Canada': '🇨🇦', 'Australia': '🇦🇺',
-            'Germany': '🇩🇪', 'France': '🇫🇷', 'Italy': '🇮🇹', 'Spain': '🇪🇸', 'Japan': '🇯🇵',
-            'China': '🇨🇳', 'India': '🇮🇳', 'Brazil': '🇧🇷', 'Russia': '🇷🇺', 'South Korea': '🇰🇷',
-            'Netherlands': '🇳🇱', 'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Denmark': '🇩🇰', 'Finland': '🇫🇮',
-            'Belgium': '🇧🇪', 'Switzerland': '🇨🇭', 'Austria': '🇦🇹', 'Poland': '🇵🇱', 'Portugal': '🇵🇹',
-            'Greece': '🇬🇷', 'Turkey': '🇹🇷', 'Israel': '🇮🇱', 'South Africa': '🇿🇦', 'Mexico': '🇲🇽',
-            'Argentina': '🇦🇷', 'Chile': '🇨🇱', 'Colombia': '🇨🇴', 'Thailand': '🇹🇭', 'Singapore': '🇸🇬',
-            'Malaysia': '🇲🇾', 'Indonesia': '🇮🇩', 'Philippines': '🇵🇭', 'Vietnam': '🇻🇳', 'New Zealand': '🇳🇿',
-            'Ireland': '🇮🇪', 'Czech Republic': '🇨🇿', 'Hungary': '🇭🇺', 'Romania': '🇷🇴', 'Bulgaria': '🇧🇬',
-            'Croatia': '🇭🇷', 'Slovenia': '🇸🇮', 'Slovakia': '🇸🇰', 'Lithuania': '🇱🇹', 'Latvia': '🇱🇻', 'Estonia': '🇪🇪'
+        const countryFlag = {
+            'India': '🇮🇳',
         };
 
         function getCountryFlag(country) {
-            return countryFlags[country] || '🌍';
+            return countryFlag[country] || '🌍';
         }
 
         function animateNumber(element, targetValue, duration = 1000) {
